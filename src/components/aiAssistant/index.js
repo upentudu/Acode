@@ -95,12 +95,6 @@ export default function openAIAssistantTab() {
       document.querySelector("main").appendChild($page);
   }
 
-	// Add file to editor and switch to it
-	editorManager.addFile(aiFile);
-	editorManager.switchFile(aiFile.id);
-}
-
-  
   // Add file to editor and switch to it
   editorManager.addFile(aiFile);
   editorManager.switchFile(aiFile.id);
