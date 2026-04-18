@@ -4,7 +4,6 @@ import "./style.scss";
 export default function openAIAssistantTab() {
   const { editorManager } = window;
 
-  // Check agar tab pehle se open hai, toh uspar switch karo
   const existingTab = editorManager.files.find(
     (f) => f.id === "acode-assistant-tab",
   );
@@ -16,7 +15,6 @@ export default function openAIAssistantTab() {
   const $chatHistory = Ref();
   const $inputBox = Ref();
 
-  // JSX for AI Interface
   const $page = (
     <div className="ai-assistant-wrapper">
       <div className="ai-chat-history" ref={$chatHistory}>
@@ -52,32 +50,21 @@ export default function openAIAssistantTab() {
     </div>
   );
 
-  // Mock Editor File Object for Acode Manager
   const aiFile = {
     id: "acode-assistant-tab",
     filename: "Acode Assistant",
     name: "Acode Assistant",
-    type: "ai-assistant", // This bypasses applyFileToEditor
+    type: "ai-assistant", 
     isUnsaved: false,
-    content: $page, // Manager will display this node when active
+    content: $page, 
     canRun: () => false,
     tab: (
       <div
-        className="file-tab"
+        className="tab" // Yahan "file-tab" ki jagah "tab" kar diya taaki yellow line aaye
         data-id="acode-assistant-tab"
         onclick={() => editorManager.switchFile("acode-assistant-tab")}
       >
-        <span
-          className="icon"
-          style={{
-            fontStyle: "normal",
-            fontWeight: "bold",
-            fontSize: "0.8em",
-            marginRight: "4px",
-          }}
-        >
-          AI
-        </span>
+        {/* "AI" wala span hata diya hai taaki sirf naam dikhe */}
         <span className="text">Acode Assistant</span>
         <span
           className="icon close"
@@ -90,18 +77,32 @@ export default function openAIAssistantTab() {
     ),
   };
 
-  // 1. Stick The UI To The Main Container!
+  // NAVIGATION BUG FIX: Tab change hone par UI ko Hide/Show karna
+  aiFile.onSwitch = (currentFile) => {
+    if (currentFile.id === "acode-assistant-tab") {
+      $page.style.display = "flex"; // AI Tab selected hai, UI dikhao
+    } else {
+      $page.style.display = "none"; // Dusra Tab selected hai, AI ko chupao
+    }
+  };
+  editorManager.on("switch-file", aiFile.onSwitch);
+
   if (!document.body.contains($page)) {
       document.querySelector("main").appendChild($page);
   }
 
-  // Add file to editor and switch to it
   editorManager.addFile(aiFile);
   editorManager.switchFile(aiFile.id);
 }
 
 function closeAITab(fileObj) {
   const { editorManager } = window;
+  
+  // Clean up: Event listener ko remove karna zaroori hai tab close hone par
+  if (fileObj.onSwitch) {
+    editorManager.off("switch-file", fileObj.onSwitch);
+  }
+
   const index = editorManager.files.indexOf(fileObj);
   if (index > -1) {
     editorManager.files.splice(index, 1);
@@ -116,7 +117,6 @@ function closeAITab(fileObj) {
         editorManager.files[editorManager.files.length - 1].id,
       );
     } else {
-      // Agar sab close ho jaye toh container hide karo
       document.getElementById("root").get(".editor-container").style.display =
         "none";
     }
