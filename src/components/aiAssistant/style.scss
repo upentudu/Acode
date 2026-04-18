@@ -7,11 +7,7 @@
 	color: var(--primary-text-color);
 	font-family: var(--app-font-family);
 	
-	/* Main screen area ke upar fix karne ke liye */
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 5;
+	/* YAHAN SE position: absolute, top, left aur z-index HATA DIYA HAI */
 
 	.ai-chat-history {
 		flex: 1; /* Bachi hui saari space le lega */

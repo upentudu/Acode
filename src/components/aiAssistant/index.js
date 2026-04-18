@@ -4,6 +4,7 @@ import "./style.scss";
 export default function openAIAssistantTab() {
   const { editorManager } = window;
 
+  // Check agar tab pehle se open hai, toh uspar switch karo
   const existingTab = editorManager.files.find(
     (f) => f.id === "acode-assistant-tab",
   );
@@ -15,6 +16,7 @@ export default function openAIAssistantTab() {
   const $chatHistory = Ref();
   const $inputBox = Ref();
 
+  // JSX for AI Interface
   const $page = (
     <div className="ai-assistant-wrapper">
       <div className="ai-chat-history" ref={$chatHistory}>
@@ -50,75 +52,19 @@ export default function openAIAssistantTab() {
     </div>
   );
 
+  // Acode ka NATIVE file structure
   const aiFile = {
     id: "acode-assistant-tab",
     filename: "Acode Assistant",
     name: "Acode Assistant",
-    type: "ai-assistant", 
+    type: "page", // "ai-assistant" ki jagah "page" kar diya
     isUnsaved: false,
-    content: $page, 
+    content: $page, // Acode ab khud ise screen par set karega
     canRun: () => false,
-    tab: (
-      <div
-        className="tab" // Yahan "file-tab" ki jagah "tab" kar diya taaki yellow line aaye
-        data-id="acode-assistant-tab"
-        onclick={() => editorManager.switchFile("acode-assistant-tab")}
-      >
-        {/* "AI" wala span hata diya hai taaki sirf naam dikhe */}
-        <span className="text">Acode Assistant</span>
-        <span
-          className="icon close"
-          onclick={(e) => {
-            e.stopPropagation();
-            closeAITab(aiFile);
-          }}
-        ></span>
-      </div>
-    ),
+    // Custom tab property hata di! Ab Acode native tab banayega yellow line ke sath
   };
 
-  // NAVIGATION BUG FIX: Tab change hone par UI ko Hide/Show karna
-  aiFile.onSwitch = (currentFile) => {
-    if (currentFile.id === "acode-assistant-tab") {
-      $page.style.display = "flex"; // AI Tab selected hai, UI dikhao
-    } else {
-      $page.style.display = "none"; // Dusra Tab selected hai, AI ko chupao
-    }
-  };
-  editorManager.on("switch-file", aiFile.onSwitch);
-
-  if (!document.body.contains($page)) {
-      document.querySelector("main").appendChild($page);
-  }
-
+  // Add file to editor and switch to it
   editorManager.addFile(aiFile);
   editorManager.switchFile(aiFile.id);
-}
-
-function closeAITab(fileObj) {
-  const { editorManager } = window;
-  
-  // Clean up: Event listener ko remove karna zaroori hai tab close hone par
-  if (fileObj.onSwitch) {
-    editorManager.off("switch-file", fileObj.onSwitch);
-  }
-
-  const index = editorManager.files.indexOf(fileObj);
-  if (index > -1) {
-    editorManager.files.splice(index, 1);
-  }
-  fileObj.tab.remove();
-  if (fileObj.content) fileObj.content.remove();
-
-  if (editorManager.activeFile?.id === fileObj.id) {
-    editorManager.activeFile = null;
-    if (editorManager.files.length > 0) {
-      editorManager.switchFile(
-        editorManager.files[editorManager.files.length - 1].id,
-      );
-    } else {
-      document.getElementById("root").get(".editor-container").style.display =
-        "none";
-    }
-  }
 }
