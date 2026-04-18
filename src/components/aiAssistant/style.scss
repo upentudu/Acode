@@ -1,0 +1,89 @@
+.ai-assistant-wrapper {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+	background-color: var(--secondary-color);
+	color: var(--primary-text-color);
+	font-family: var(--app-font-family);
+    display: none; /* Managed by switchFile */
+
+	.ai-chat-history {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		overflow-y: auto;
+		padding: 1rem;
+
+		.ai-empty-state {
+			text-align: center;
+			opacity: 0.8;
+
+			h2 {
+				font-size: 1.2rem;
+				font-weight: 500;
+				margin-bottom: 0.5rem;
+			}
+			p {
+				font-size: 0.9rem;
+				color: var(--secondary-text-color);
+				line-height: 1.4;
+			}
+		}
+	}
+
+	.ai-input-container {
+		padding: 10px;
+		background: var(--primary-color);
+		
+		.ai-input-box {
+			border: 1px solid var(--border-color);
+			border-radius: 6px;
+			background: var(--secondary-color);
+			padding: 8px 10px;
+			display: flex;
+			flex-direction: column;
+
+			textarea {
+				background: transparent;
+				border: none;
+				color: var(--primary-text-color);
+				resize: none;
+				outline: none;
+				font-size: 0.9rem;
+				font-family: inherit;
+				min-height: 24px;
+				margin-bottom: 10px;
+
+				&::placeholder {
+					color: var(--secondary-text-color);
+				}
+			}
+
+			.ai-controls {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				.ai-left-controls, .ai-right-controls {
+					display: flex;
+					align-items: center;
+					gap: 12px;
+				}
+
+				.icon {
+					font-size: 1.2rem;
+					cursor: pointer;
+					color: var(--secondary-text-color);
+				}
+
+				.ai-dropdown {
+					font-size: 0.8rem;
+					color: var(--secondary-text-color);
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}
