@@ -67,14 +67,14 @@
          updated_version: ${{ steps.update-version.outputs.UPDATED_VERSION}} 
          RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
       steps:
-        - name: Fast Fail if secrets are missing
-          if: ${{ env.KEYSTORE_CONTENT == '' || env.BUILD_JSON_CONTENT == '' }}
-          env:
-             KEYSTORE_CONTENT: ${{ secrets.KEYSTORE_CONTENT }} 
-             BUILD_JSON_CONTENT: ${{ secrets.BUILD_JSON_CONTENT }} 
-          run: |
-            echo "::error title=Missing Secrets::KEYSTORE_CONTENT or BUILD_JSON_CONTENT secrets are missing! Aborting workflow."
-            exit 1
+        # - name: Fast Fail if secrets are missing
+          # if: ${{ env.KEYSTORE_CONTENT == '' || env.BUILD_JSON_CONTENT == '' }}
+          # env:
+             # KEYSTORE_CONTENT: ${{ secrets.KEYSTORE_CONTENT }} 
+             # BUILD_JSON_CONTENT: ${{ secrets.BUILD_JSON_CONTENT }} 
+          # run: |
+            # echo "::error title=Missing Secrets::KEYSTORE_CONTENT or BUILD_JSON_CONTENT secrets are missing! Aborting workflow."
+            # exit 1
         
         - name: Logging & summaries
           run: |
@@ -117,11 +117,11 @@
             node-version: 'lts/*' # or '18.x' for latest stable
             cache: ${{ (!(inputs.is_PR && inputs.PR_NUMBER) && github.ref == 'refs/heads/main' && 'npm') || '' }}
 
-        - name: Add keystore and build.json from secrets
-          run: |
-            echo "${{ secrets.KEYSTORE_CONTENT }}" | base64 -d > ${{ env.STORE_FILE_PATH }}
-            echo "${{ secrets.BUILD_JSON_CONTENT }}" | base64 -d > ${{ env.BUILD_JSON_PATH }}
-            echo "Keystore and build.json added successfully."
+        # - name: Add keystore and build.json from secrets
+          # run: |
+            # echo "${{ secrets.KEYSTORE_CONTENT }}" | base64 -d > ${{ env.STORE_FILE_PATH }}
+            # echo "${{ secrets.BUILD_JSON_CONTENT }}" | base64 -d > ${{ env.BUILD_JSON_PATH }}
+            # echo "Keystore and build.json added successfully."
 
         - name: Export Commit Hash & prev tag
           run: |
@@ -199,10 +199,10 @@
             name: app-debug-fdroid-${{ env.GIT_COMMIT }}
             path: ${{ env.FDROID_APK_PATH }}
 
-        - name: remove keystore and build.json
-          run: |
-            rm $STORE_FILE_PATH $BUILD_JSON_PATH
-            echo "Keystore and build.json removed successfully."
+        # - name: remove keystore and build.json
+          # run: |
+            # rm $STORE_FILE_PATH $BUILD_JSON_PATH
+            # echo "Keystore and build.json removed successfully."
         
         - name: Check Nightly Tag and Force Update
           #if: github.event_name == 'push' && contains(github.event.ref, 'tags/nightly') == false
