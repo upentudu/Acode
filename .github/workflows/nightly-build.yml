@@ -54,7 +54,7 @@
     build:
       timeout-minutes: 60
       runs-on: ubuntu-latest
-      if: github.repository_owner == 'Acode-Foundation'
+      # if: github.repository_owner == 'Acode-Foundation'
 
       permissions:
 #        contents write is needed to create Nightly Releases.
@@ -279,17 +279,17 @@
                    [Click here to view that github actions build](https://github.com/${{ github.repository}}/actions/runs/${{ github.run_id }})
              
 
-    community-release-notifier:
-      needs: build
+    # community-release-notifier:
+      # needs: build
 #      Run only if push tags, or triggered by a schedule
-      if: ${{ github.repository_owner == 'Acode-Foundation' && (contains(fromJSON('["push", "schedule"]'), github.event_name) || ! inputs.skip_tagging_and_releases) && needs.build.outputs.release_output_url }}
-      uses: Acode-Foundation/acode/.github/workflows/community-release-notifier.yml@main
-      with:
-         tag_name: ${{ needs.build.outputs.updated_version }}
-         url: ${{ needs.build.outputs.release_output_url }}
-         body: ${{ needs.build.outputs.RELEASE_NOTES }}
-      secrets:
-        DISCORD_WEBHOOK_RELEASE_NOTES: ${{ secrets.DISCORD_WEBHOOK_RELEASE_NOTES }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        TELEGRAM_MESSAGE_THREAD_ID: ${{ secrets.TELEGRAM_MESSAGE_THREAD_ID }}
+      # if: ${{ github.repository_owner == 'Acode-Foundation' && (contains(fromJSON('["push", "schedule"]'), github.event_name) || ! inputs.skip_tagging_and_releases) && needs.build.outputs.release_output_url }}
+      # uses: Acode-Foundation/acode/.github/workflows/community-release-notifier.yml@main
+      # with:
+         # tag_name: ${{ needs.build.outputs.updated_version }}
+         # url: ${{ needs.build.outputs.release_output_url }}
+         # body: ${{ needs.build.outputs.RELEASE_NOTES }}
+      # secrets:
+        # DISCORD_WEBHOOK_RELEASE_NOTES: ${{ secrets.DISCORD_WEBHOOK_RELEASE_NOTES }}
+        # TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        # TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        # TELEGRAM_MESSAGE_THREAD_ID: ${{ secrets.TELEGRAM_MESSAGE_THREAD_ID }}
