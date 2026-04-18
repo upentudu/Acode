@@ -492,18 +492,14 @@ async function loadApp() {
   const $aiBtn = (
     <span
       className="icon"
-      style={{
-        fontSize: "1.1em",
-        fontStyle: "normal",
-        fontWeight: "bold",
-        padding: "0 10px",
-      }}
+      style={{ fontSize: "1.1em", fontStyle: "normal", fontWeight: "bold", padding: "0 10px" }}
       attr-action="open-ai"
-      onclick={() => acode.exec("open-ai-assistant")}
+      onclick={() => openAIAssistantTab()}
     >
       AI
     </span>
   );
+
 
   const $floatingNavToggler = (
     <span

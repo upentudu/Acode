@@ -16,7 +16,7 @@ export default function openAIAssistantTab() {
   const $chatHistory = Ref();
   const $inputBox = Ref();
 
-  // JSX for AI Interface based on Image 3
+  // JSX for AI Interface
   const $page = (
     <div className="ai-assistant-wrapper">
       <div className="ai-chat-history" ref={$chatHistory}>
@@ -90,6 +90,17 @@ export default function openAIAssistantTab() {
     ),
   };
 
+  // 1. Stick The UI To The Main Container!
+  if (!document.body.contains($page)) {
+      document.querySelector("main").appendChild($page);
+  }
+
+	// Add file to editor and switch to it
+	editorManager.addFile(aiFile);
+	editorManager.switchFile(aiFile.id);
+}
+
+  
   // Add file to editor and switch to it
   editorManager.addFile(aiFile);
   editorManager.switchFile(aiFile.id);
